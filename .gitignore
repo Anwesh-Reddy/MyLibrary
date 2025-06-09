@@ -31,3 +31,22 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# System
+.DS_Store          # macOS
+Thumbs.db          # Windows
+*.log              # Log files
+
+# IDEs/editors
+.idea/
+*.swp              # Vim swap files
+*.sublime-workspace
+*.code-workspace
+
+/target/
+*.class
+*.jar
+*.war
+*.ear
+.gradle/
+
