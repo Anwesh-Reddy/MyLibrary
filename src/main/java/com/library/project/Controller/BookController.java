@@ -3,11 +3,9 @@ package com.library.project.Controller;
 import com.library.project.Entity.BookEntity;
 import com.library.project.Impl.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,5 +18,25 @@ public class BookController {
     @GetMapping("/{isbn}")
     public Optional<BookEntity> getBookByIsbn(@PathVariable Long isbn) {
         return bookServiceImpl.getBookByIsbn(isbn);
+    }
+
+    @GetMapping("/books")
+    public List<BookEntity> getAllBooks() {
+        return bookServiceImpl.getAllBooks();
+    }
+
+    @PostMapping
+    public BookEntity createBook(@RequestBody BookEntity bookEntity){
+        return bookServiceImpl.saveBook(bookEntity);
+    }
+
+    @PutMapping("/update/{isbn}")
+    public BookEntity updateBook(@RequestBody BookEntity bookEntity, @PathVariable Long isbn){
+        return bookServiceImpl.updateBook(bookEntity, isbn);
+    }
+
+    @DeleteMapping("/delete/{isbn}")
+    public BookEntity deleteBook(@PathVariable Long isbn){
+        return bookServiceImpl.deleteBook(isbn);
     }
 }
