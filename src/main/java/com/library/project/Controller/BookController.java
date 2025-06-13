@@ -20,7 +20,7 @@ public class BookController {
         return bookServiceImpl.getBookByIsbn(isbn);
     }
 
-    @GetMapping("/books")
+    @GetMapping
     public List<BookEntity> getAllBooks() {
         return bookServiceImpl.getAllBooks();
     }
