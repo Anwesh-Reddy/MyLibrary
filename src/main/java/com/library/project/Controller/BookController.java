@@ -22,9 +22,10 @@ public class BookController {
         return bookServiceImpl.getBookByIsbn(isbn);
     }
 
-    @GetMapping("/books")
+    @GetMapping
     public List<BookEntity> getAllBooks() {
         return bookServiceImpl.getAllBooks();
+
     }
 
     @PostMapping
@@ -44,4 +45,5 @@ public class BookController {
         BookEntity deletedBook = bookServiceImpl.deleteBook(isbn);
         return ResponseEntity.ok(deletedBook);
     }
+
 }
