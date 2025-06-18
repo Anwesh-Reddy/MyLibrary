@@ -40,10 +40,13 @@ class BookControllerTest {
     @Test
     void getBookByIsbn() {
         when(bookService.getBookByIsbn(1L)).thenReturn(Optional.of(book));
-        Optional<BookEntity> result = bookController.getBookByIsbn(1L);
-        assertTrue(result.isPresent());
-        assertEquals("Art of Not Overthinking", result.get().getName());
+
+        ResponseEntity<BookEntity> response = bookController.getBookByIsbn(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Art of Not Overthinking", response.getBody().getName());
     }
+
 
     @Test
     void getAllBooks() {
