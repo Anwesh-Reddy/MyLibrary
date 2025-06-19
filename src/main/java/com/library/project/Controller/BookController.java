@@ -1,6 +1,7 @@
 package com.library.project.Controller;
 
 import com.library.project.Entity.BookEntity;
+import com.library.project.Exception.BookNotFoundException;
 import com.library.project.Impl.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,11 @@ public class BookController {
     private BookServiceImpl bookServiceImpl;
 
     @GetMapping("/{isbn}")
-    public Optional<BookEntity> getBookByIsbn(@PathVariable Long isbn) {
-        return bookServiceImpl.getBookByIsbn(isbn);
+    public ResponseEntity<BookEntity> getBookByIsbn(@PathVariable Long isbn) {
+        return bookServiceImpl.getBookByIsbn(isbn)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BookNotFoundException("Book with ISBN " + isbn + " not found"));
     }
-
     @GetMapping
     public List<BookEntity> getAllBooks() {
         return bookServiceImpl.getAllBooks();

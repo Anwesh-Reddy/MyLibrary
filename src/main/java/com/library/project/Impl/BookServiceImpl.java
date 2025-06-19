@@ -1,6 +1,7 @@
 package com.library.project.Impl;
 
 import com.library.project.Entity.BookEntity;
+import com.library.project.Exception.BookNotFoundException;
 import com.library.project.Repository.BookRepository;
 import com.library.project.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,33 +29,30 @@ public class BookServiceImpl implements BookService {
     public BookEntity saveBook(BookEntity bookEntity) {
         return bookRepository.save(bookEntity);
     }
+
     @Override
     public BookEntity updateBook(BookEntity bookEntity, Long isbn) {
-        Optional<BookEntity> existingBookOptional = bookRepository.findById(isbn);
+        BookEntity existingBook = bookRepository.findById(isbn)
+                .orElseThrow(() -> new BookNotFoundException("Book with ISBN " + isbn + " not found"));
 
-        if (existingBookOptional.isPresent()) {
-            BookEntity existingBook = existingBookOptional.get();
-            existingBook.setName(bookEntity.getName());
-            existingBook.setAisle(bookEntity.getAisle());
-            existingBook.setShelf(bookEntity.getShelf());
-            return bookRepository.save(existingBook);
-        }
-        return null;
+        existingBook.setName(bookEntity.getName());
+        existingBook.setAisle(bookEntity.getAisle());
+        existingBook.setShelf(bookEntity.getShelf());
+
+        return bookRepository.save(existingBook);
     }
 
     @Override
     public BookEntity deleteBook(Long isbn) {
-        Optional<BookEntity> bookOptional = bookRepository.findById(isbn);
-
-        if (bookOptional.isPresent()) {
-        BookEntity book = bookOptional.get();
-        bookRepository.deleteById(isbn);
+        BookEntity book = bookRepository.findById(isbn)
+                .orElseThrow(() -> new BookNotFoundException("Book with ISBN " + isbn + " not found"));
+        bookRepository.delete(book);
         return book;
-        }
-        return null;
     }
 
+    @Override
     public List<BookEntity> getAllBooks() {
         return bookRepository.findAll();
     }
 }
+
